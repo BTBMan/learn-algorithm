@@ -31,7 +31,7 @@ var hasCycle = function (head) {
 
   // return false;
 
-  // 2.
+  // 2.just for test
   let fast = head;
   let slow = head;
 
