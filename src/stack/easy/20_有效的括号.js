@@ -17,13 +17,27 @@ var isValid = function (s) {
     '[': ']',
   };
 
-  s.split('').forEach((str) => {
-    if (map[stack[stack.length - 1]] === str) {
-      stack.pop();
-    } else {
-      stack.push(str);
+  // 1.
+  // s.split('').forEach((str) => {
+  //   if (map[stack[stack.length - 1]] === str) {
+  //     stack.pop();
+  //   } else {
+  //     stack.push(str);
+  //   }
+  // });
+
+  // return !stack.length;
+
+  // 2.
+  for (let i = 0; i < s.length; i++) {
+    const ele = s[i];
+
+    if (ele in map) {
+      stack.push(ele);
+    } else if (ele !== map[stack.pop()]) {
+      return false;
     }
-  });
+  }
 
   return !stack.length;
 };
