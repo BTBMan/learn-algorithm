@@ -1,6 +1,8 @@
 const numberArr = [24, 564, 6, 68, 5, 66, 23, 67, 98, 1];
 const simpleArr = [3, 2, 1];
 
+// 时间复杂度 O(n^2)
+// 空间复杂度 O(1)
 const bubbleSort = (arr) => {
   const len = arr.length - 1; // 因为要与右边的内容进行比对, 避免undefined.
 
