@@ -34,27 +34,16 @@ const quickSort1 = (arr) => {
 // 原地快速排序
 // 时间复杂度O(n * log n)
 // 空间复杂度O(1)
-// 定义一个标志位(以第一个值为例)
-// 使用双指针 一个从最前面往后开始查找 找到比标志位大的数
-// 另一个从最后面开始往前查找 找到比标志位小的数
+// 以第一个值做为标志位
+// 使用双指针
+// 一个从最后面开始往前查找 找到比标志位小的数(first)
+// 一个从最前面往后开始查找 找到比标志位大的数
 // 交换这两个的位置
 // 直到两个指针遇见后结束
-// [3, 2, 5, 1] flag值为3 start位置:0 end位置:3
-// start位置要先+1 因为要把flag在遍历里去处掉
-// [3, 2, 5, 1] flag值为3 start位置:1 end位置:3
-// [3, 2, 5, 1] flag值为3 end的值为1 比3小 须要交换位置
-// [3, 2, 5, 1] flag值为3 start的值为2 比3小 不需要做任何操作 start位置 = start+1 = 2
-// [3, 2, 5, 1] flag值为3 start的值为5 比3大 须要交换位置
-// [3, 2, 5, 1] flag值为3 start位置:2 end位置:3
-// start位置:2 小于 end位置:3 表示两个指针没有遇见
-// [3, 2, 1, 5] flag值为3 start位置:2 end位置:3
-// 分别移动两个指针 start位置:3 end位置:2
-// 此时两个指针已经遇见 任务结束
-// 结束后把flag和start的上一个位置(start-1)值换一下(因为start和end互换了 end开始找的是比flag小的数 那么证明交换后的start的值比flag小 要在flag的前面 所以要交换位置)
-// [1, 2, 3, 5] flag值为3 start位置:3 end位置:2
+// 实际上就是采用了上面quickSort1的思想, 通过标志位把一个数组拆成两组, 只不过不需要额外的变量, 而是通过交换位置的手法, 实际上一轮下来, 得到的结果是以标志位为分隔, 左边是通过从后面查找到的比标志位小的数, 右边则是通过前面查找比标志位大的数
+// 最后在以标志位分割两组(实际是移动指针), 分别继续排序
 // 返回start的位置
 const quickSort2 = (arr) => {
-  // [3, 2, 1]
   const point = (arr, start, end) => {
     const init = start;
     const flag = arr[init];
@@ -69,22 +58,24 @@ const quickSort2 = (arr) => {
         start++;
       }
 
-      console.log(start, end);
-
       if (start < end) {
         [arr[start], arr[end]] = [arr[end], arr[start]];
         start++;
         end--;
       }
     }
+
+    [arr[start - 1], arr[init]] = [arr[init], arr[start - 1]];
+
+    // 此时指针应该就是最后标志位的位置+1
+    return start;
   };
 
   const sort = (arr, start, end) => {
     if (start < end) {
-      const index = point(arr, start, end);
-      console.log(start, end);
-      // sort(arr, start, index - 1);
-      // sort(arr, index, end);
+      const index = point(arr, start, end); // 这个是标志位的位置 以此分割
+      sort(arr, start, index - 2); // 排序左边
+      sort(arr, index, end); // 排序右边
     }
 
     return arr;
@@ -94,7 +85,9 @@ const quickSort2 = (arr) => {
 };
 
 // console.log(quickSort2(numberArr));
-console.log(quickSort2(simpleArr));
+// console.log(quickSort2([6, 5, 4, 3, 2, 1]));
+// console.log(quickSort2([1, 2, 3, 4, 5, 6]));
+// console.log(quickSort2(simpleArr));
 
 // let arr = [1, 3, 5];
 // let flag = 3;
